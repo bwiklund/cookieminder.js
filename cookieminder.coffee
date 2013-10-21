@@ -31,15 +31,26 @@ class CookieZone
   process: ->
     @data = @processor.imageData.data
 
+    @avgColor =
+      r: 0
+      g: 0
+      b: 0
+
     width = @processor.imageData.width
 
     for x in [@rect.x...@rect.x+@rect.w]
       for y in [@rect.y...@rect.y+@rect.h]
         i = (x + y * width) * 4
-        @data[i+0] = 255
-        @data[i+1] = 0
-        @data[i+2] = 255
-        @data[i+3] = 255
+        @avgColor.r += @data[i+0]
+        @avgColor.g += @data[i+1]
+        @avgColor.b += @data[i+2]
+
+    totalPixels = @rect.w * @rect.h
+    @avgColor.r /= totalPixels
+    @avgColor.g /= totalPixels
+    @avgColor.b /= totalPixels
+
+    console.log @avgColor
 
 
 new CookieImageProcessor 'test/cookies.jpg', [
