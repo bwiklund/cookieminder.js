@@ -1,7 +1,7 @@
 class CookieImageProcessor
-  constructor: (src) ->
+  constructor: (@src,@rects) ->
     @image = new Image
-    @image.src = src
+    @image.src = @src
     @image.onload = => @onLoaded()
 
   onLoaded: ->
@@ -15,13 +15,7 @@ class CookieImageProcessor
     @process()
 
   process: ->
-    rects = [
-      {x:133, y:210, w:83, h:183}
-      {x:287, y:210, w:83, h:183}
-      {x:419, y:210, w:83, h:183}
-      {x:529, y:210, w:83, h:183}
-    ]
-    zones = ( new CookieZone(@, rect) for rect in rects )
+    zones = ( new CookieZone(@, rect) for rect in @rects )
     
     zone.process() for zone in zones
 
@@ -47,4 +41,10 @@ class CookieZone
         @data[i+2] = 255
         @data[i+3] = 255
 
-new CookieImageProcessor 'test/cookies.jpg'
+
+new CookieImageProcessor 'test/cookies.jpg', [
+  {x:133, y:210, w:83, h:183}
+  {x:287, y:210, w:83, h:183}
+  {x:419, y:210, w:83, h:183}
+  {x:529, y:210, w:83, h:183}
+]
